@@ -14,33 +14,39 @@ def api_get_request():
     #   - The daily data block will contain a single data point referring to the requested date.
     #   - The alerts data block will be omitted.
 
-
-
+    # Dark Sky URL
+    base_url = 'https:// api.darksky.net/forecast/'
 
     # Secret API Key
-    key = '82ed529296a9e4d16d85f95242f3f3b2'
+    key = '82ed529296a9e4d16d85f95242f3f3b2/'
 
-    url =
+    # Coordonnées de la vigne à Mireval 43.50885, 3.79118
+    latitude = '43.50885,'
+    longitude = '3.79118,'
+
+    # Date demandée
+
+
+    # URL de requête
 
     print(url)
     # Get data from API Method
-    data = requests.get(url).text
-    data = json.loads(data)
+    #data = requests.get(url).text
+    #data = json.loads(data)
 
     # Used to print JSON format data
-    pp = pprint.PrettyPrinter()
-    pp.pprint(type(data))
-    pp.pprint(data)
+    #pp = pprint.PrettyPrinter()
+    #pp.pprint(type(data))
+    #pp.pprint(data)
 
     # Query for Top Artist in the list [the first one]
 
 
     pp.pprint(top_artist)
 
-    return data  # return the top artist in Spain
+    return url  # return the top artist in Spain
 
 
 
-
-url = 'http://ws.audioscrobbler.com/2.0/?method=geo.gettopartists&country=spain&api_key=4beab33cc6d65b05800d51f5e83bde1b&format=json'
-api_get_request(url)
+def main():
+    api_get_request(url)
