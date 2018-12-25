@@ -112,7 +112,7 @@ def main():
     print(df)
     date_name = str(datetime.datetime.utcfromtimestamp(date_init).strftime('%d-%m-%Y'))
     print(date_name)
-    file_name = 'darksky_data_' + latitude + longitude + '_' + str(date_init) + '_' + str(duree) + '.csv'
+    file_name = 'darksky_data_' + latitude[:4] + longitude[:4] + '_' + str(date_init) + '_' + str(duree) + '.csv'
     df.to_csv(file_name, "w")
 
 # Exécution principale
