@@ -3,6 +3,7 @@ import calendar
 import requests
 import json
 import pprint
+import pandas
 
 
 def api_get_request():
@@ -45,17 +46,19 @@ def api_get_request():
     data = requests.get(url).text
     data = json.loads(data)
 
-    # Used to print JSON format data
-    pp = pprint.PrettyPrinter()
-    pp.pprint(type(data))
-    pp.pprint(data)
-
-    return url
+    return data
 
 
 
 def main():
-    api_get_request()
+    data_json = api_get_request()
+    # Used to print JSON format data
+    pp = pprint.PrettyPrinter()
+    pp.pprint(type(data_json))
+    pp.pprint(data_json)
+
+    # Creating a pandas data frame
+
 
 # Exécution principale
 if __name__ == '__main__':
