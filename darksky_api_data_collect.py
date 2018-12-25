@@ -18,7 +18,7 @@ def time_table(init_stamp,duree_periode):
     time_table = range(init_stamp, init_stamp + duree_periode*daysec, daysec)
     return time_table
 
-def api_get_request(timesec):
+def api_get_request(latitude, longitude, timesec):
     # API Manual for Time Machine Request
     # url : https: // api.darksky.net / forecast / [key] / [latitude], [longitude], [time]
     # A Time Machine Request returns the observed (in the past) or forecasted (in the future) hour - by - hour weather and daily weather conditions
@@ -38,9 +38,7 @@ def api_get_request(timesec):
     # Secret API Key
     key = '82ed529296a9e4d16d85f95242f3f3b2/'
 
-    # Coordonnées de la vigne à Mireval 43.50885, 3.79118
-    latitude = '43.50885,'
-    longitude = '3.79118,'
+    # Coordonnées géographiques
     print("Location : ", latitude, longitude)
 
     # Date
@@ -50,7 +48,7 @@ def api_get_request(timesec):
     exclusion = '?exclude=currently,hourly,flags'
 
     # URL de requête
-    url = base_url + key + latitude + longitude + str(timesec) + exclusion
+    url = base_url + key + latitude + "," + longitude + "," + str(timesec) + exclusion
     print(url)
 
     # Get data from API Method
@@ -82,8 +80,15 @@ def add_data(request,data_dict):
     return data_dict
 
 def main():
+    # Initialisation du dictionnaire
     data_dict = {}
 
+    # Coordonnées géographiques
+    # Coordonnées de la vigne à Mireval 43.50885, 3.79118
+    latitude = '43.50885'
+    longitude = '3.79118'
+
+    # Période temporelle
     # Date de début de la période et durée de la période
     date_init = time_stamp(2017, 6, 30)
     duree = 5
@@ -92,7 +97,7 @@ def main():
     # Requêtes successives
     count = 0
     for date_time_stamp in periode:
-        request = api_get_request(date_time_stamp)
+        request = api_get_request(latitude, longitude, date_time_stamp)
         # print_json(request)
         if (count == 0):
             init_dict(request,data_dict)
@@ -105,8 +110,10 @@ def main():
     # Creating a pandas data frame
     df = pandas.DataFrame(dict([(k,pandas.Series(v)) for k,v in data_dict.items()]))
     print(df)
-    file_name = 'darksky_data_' + str(date_init) + '_' + str(duree) + '.csv'
-    df.to_csv(file_name)
+    date_name = str(datetime.datetime.utcfromtimestamp(date_init).strftime('%d-%m-%Y'))
+    print(date_name)
+    file_name = 'darksky_data_' + latitude + longitude + '_' + str(date_init) + '_' + str(duree) + '.csv'
+    df.to_csv(file_name, "w")
 
 # Exécution principale
 if __name__ == '__main__':
