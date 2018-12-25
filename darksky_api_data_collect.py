@@ -66,12 +66,11 @@ def print_json(json):
 
 
 def init_dict():
-    # Transforme un dictionnaire json, en un dictionnaire de listes
-    #for key in request['daily']['data'][0]:
-    #   value = request['daily']['data'][0][key]
-    #   data_dict[key] = [value]
-
     data_dict = {
+        'latitude': [],
+        'longitude': [],
+        'timezone': [],
+        'time': [],
         'apparentTemperature': [],
         'apparentTemperatureHigh': [],
         'apparentTemperatureHighTime': [],
@@ -109,7 +108,6 @@ def init_dict():
         'temperatureMaxTime': [],
         'temperatureMin': [],
         'temperatureMinTime': [],
-        'time': [],
         'uvIndex': [],
         'uvIndexTime': [],
         'visibility': [],
@@ -123,6 +121,10 @@ def init_dict():
 
 def add_data(request,data_dict):
     # Transforme un dictionnaire json, en un dictionnaire de listes
+    data_dict['latitude'].append(request['latitude'])
+    data_dict['longitude'].append(request['longitude'])
+    data_dict['timezone'].append(request['timezone'])
+
     for key in request['daily']['data'][0]:
         value = request['daily']['data'][0][key]
         data_dict[key].append(value)
@@ -139,20 +141,15 @@ def main():
 
     # Période temporelle
     # Date de début de la période et durée de la période
-    date_init = time_stamp(2017, 6, 30)
-    duree = 5
+    date_init = time_stamp(2017, 1, 1)
+    duree = 365
     periode = time_table(date_init, duree)
 
     # Requêtes successives
-    count = 1
     for date_time_stamp in periode:
         request = api_get_request(latitude, longitude, date_time_stamp)
         # print_json(request)
-        if (count == 0):
-            init_dict(request,data_dict)
-        else:
-            add_data(request, data_dict)
-        count +=1
+        add_data(request, data_dict)
 
     print(data_dict)
 
@@ -160,7 +157,6 @@ def main():
     df = pandas.DataFrame(dict([(k,pandas.Series(v)) for k,v in data_dict.items()]))
     print(df)
     date_name = str(datetime.datetime.utcfromtimestamp(date_init).strftime('%d-%m-%Y'))
-    print(date_name)
     file_name = 'darksky_data_' + latitude[:4] + '_' + longitude[:4] + '_' + date_name + '_' + str(duree) + '.csv'
     df.to_csv(file_name, "w")
 
