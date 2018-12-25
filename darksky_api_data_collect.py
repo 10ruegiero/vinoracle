@@ -6,7 +6,14 @@ import pprint
 import pandas
 
 
-def api_get_request():
+def time_stamp(year,month,day):
+    date = datetime.datetime(year,month,day)
+    print("Date : ", date)
+    timesec = calendar.timegm(date.utctimetuple())
+    print("Timestamp équivalent :", timesec)
+    return timesec
+
+def api_get_request(timesec):
     # API Manual for Time Machine Request
     # url : https: // api.darksky.net / forecast / [key] / [latitude], [longitude], [time]
     # A Time Machine Request returns the observed (in the past) or forecasted (in the future) hour - by - hour weather and daily weather conditions
@@ -31,12 +38,7 @@ def api_get_request():
     longitude = '3.79118,'
     print("Location : ", latitude, longitude)
 
-    # Date demandée 30 juin 2017
-    date_text = "30JUN2017"
-    date = datetime.datetime.strptime(date_text, "%d%b%Y")
-    print("Date : ",date)
-    timesec = calendar.timegm(date.utctimetuple())
-    print("Timestamp équivalent :", timesec)
+
 
     # Excluding datas
     exclusion = '?exclude=currently,hourly,flags'
@@ -54,7 +56,11 @@ def api_get_request():
 
 
 def main():
-    data_json = api_get_request()
+    # Date demandée 30 juin 2017
+    date_time_stamp = time_stamp(2017,6,30)
+    data_json = api_get_request(date_time_stamp)
+
+
     # Used to print JSON format data
     pp = pprint.PrettyPrinter()
     pp.pprint(type(data_json))
