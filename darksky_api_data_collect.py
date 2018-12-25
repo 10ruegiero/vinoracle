@@ -65,11 +65,60 @@ def print_json(json):
     pp.pprint(json)
 
 
-def init_dict(request,data_dict):
+def init_dict():
     # Transforme un dictionnaire json, en un dictionnaire de listes
-    for key in request['daily']['data'][0]:
-        value = request['daily']['data'][0][key]
-        data_dict[key] = [value]
+    #for key in request['daily']['data'][0]:
+    #   value = request['daily']['data'][0][key]
+    #   data_dict[key] = [value]
+
+    data_dict = {
+        'apparentTemperature': [],
+        'apparentTemperatureHigh': [],
+        'apparentTemperatureHighTime': [],
+        'apparentTemperatureLow': [],
+        'apparentTemperatureLowTime': [],
+        'apparentTemperatureMax': [],
+        'apparentTemperatureMaxTime': [],
+        'apparentTemperatureMin': [],
+        'apparentTemperatureMinTime': [],
+        'cloudCover': [],
+        'dewPoint': [],
+        'humidity': [],
+        'icon': [],
+        'moonPhase': [],
+        'nearestStormBearing': [],
+        'nearestStormDistance': [],
+        'ozone': [],
+        'precipAccumulation': [],
+        'precipIntensity': [],
+        'precipIntensityError': [],
+        'precipIntensityMax': [],
+        'precipIntensityMaxTime': [],
+        'precipProbability': [],
+        'precipType': [],
+        'pressure': [],
+        'summary': [],
+        'sunriseTime': [],
+        'sunsetTime': [],
+        'temperature': [],
+        'temperatureHigh': [],
+        'temperatureHighTime': [],
+        'temperatureLow': [],
+        'temperatureLowTime': [],
+        'temperatureMax': [],
+        'temperatureMaxTime': [],
+        'temperatureMin': [],
+        'temperatureMinTime': [],
+        'time': [],
+        'uvIndex': [],
+        'uvIndexTime': [],
+        'visibility': [],
+        'windBearing': [],
+        'windGust': [],
+        'windGustTime': [],
+        'windSpeed': []
+    }
+
     return data_dict
 
 def add_data(request,data_dict):
@@ -81,7 +130,7 @@ def add_data(request,data_dict):
 
 def main():
     # Initialisation du dictionnaire
-    data_dict = {}
+    data_dict = init_dict()
 
     # Coordonnées géographiques
     # Coordonnées de la vigne à Mireval 43.50885, 3.79118
@@ -95,7 +144,7 @@ def main():
     periode = time_table(date_init, duree)
 
     # Requêtes successives
-    count = 0
+    count = 1
     for date_time_stamp in periode:
         request = api_get_request(latitude, longitude, date_time_stamp)
         # print_json(request)
