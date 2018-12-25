@@ -8,10 +8,15 @@ import pandas
 
 def time_stamp(year,month,day):
     date = datetime.datetime(year,month,day)
-    print("Date : ", date)
+    # print("Date : ", date)
     timesec = calendar.timegm(date.utctimetuple())
-    print("Timestamp équivalent :", timesec)
+    # print("Timestamp équivalent :", timesec)
     return timesec
+
+def time_table(init_stamp,duree_periode):
+    daysec = 86400
+    time_table = range(init_stamp, init_stamp + duree_periode*daysec, daysec)
+    return time_table
 
 def api_get_request(timesec):
     # API Manual for Time Machine Request
@@ -38,7 +43,8 @@ def api_get_request(timesec):
     longitude = '3.79118,'
     print("Location : ", latitude, longitude)
 
-
+    # Date
+    print("Date : ", datetime.datetime.utcfromtimestamp(timesec).strftime('%d-%m-%Y %H:%M:%S'))
 
     # Excluding datas
     exclusion = '?exclude=currently,hourly,flags'
@@ -54,20 +60,40 @@ def api_get_request(timesec):
     return data
 
 
-
-def main():
-    # Date demandée 30 juin 2017
-    date_time_stamp = time_stamp(2017,6,30)
-    data_json = api_get_request(date_time_stamp)
-
-
+def print_json(json):
     # Used to print JSON format data
     pp = pprint.PrettyPrinter()
-    pp.pprint(type(data_json))
-    pp.pprint(data_json)
+    pp.pprint(type(json))
+    pp.pprint(json)
+
+def add_data(request,data_dict):
+    # Transforme un dictionnaire json, en un dictionnaire de listes
+    for key in request['daily']['data'][0]:
+        value = [request['daily']['data'][0][key]]
+        data_dict[key] = [value]
+    return data_dict
+
+def main():
+    data_dict = {}
+
+    # Date de début de la période et durée de la période
+    date_init = time_stamp(2017, 6, 30)
+    duree = 30
+    periode = time_table(date_init, duree)
+
+    # Requêtes successives
+    for date_time_stamp in periode:
+        request = api_get_request(date_time_stamp)
+        # print_json(request)
+        add_data(request, data_dict)
+
+    print(data_dict)
 
     # Creating a pandas data frame
-
+    df = pandas.DataFrame(data=data_dict)
+    print(df)
+    file_name = 'darksky_data_' + str(date_init) + '_' + str(duree) + '.csv'
+    df.to_csv(file_name)
 
 # Exécution principale
 if __name__ == '__main__':
