@@ -38,8 +38,11 @@ def api_get_request():
     timesec = calendar.timegm(date.utctimetuple())
     print("Timestamp équivalent :", timesec)
 
+    # Excluding datas
+    exclusion = '?exclude=currently,hourly,flags'
+
     # URL de requête
-    url = base_url + key + latitude + longitude + str(timesec)
+    url = base_url + key + latitude + longitude + str(timesec) + exclusion
     print(url)
 
     # Get data from API Method
