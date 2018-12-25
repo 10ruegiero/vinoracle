@@ -1,5 +1,7 @@
-import json
+import datetime
+import calendar
 import requests
+import json
 import pprint
 
 
@@ -14,8 +16,11 @@ def api_get_request():
     #   - The daily data block will contain a single data point referring to the requested date.
     #   - The alerts data block will be omitted.
 
+    # Request preparation
+    print("#### Dark Sky API Request ####")
+
     # Dark Sky URL
-    base_url = 'https:// api.darksky.net/forecast/'
+    base_url = 'https://api.darksky.net/forecast/'
 
     # Secret API Key
     key = '82ed529296a9e4d16d85f95242f3f3b2/'
@@ -23,30 +28,35 @@ def api_get_request():
     # Coordonnées de la vigne à Mireval 43.50885, 3.79118
     latitude = '43.50885,'
     longitude = '3.79118,'
+    print("Location : ", latitude, longitude)
 
-    # Date demandée
-
+    # Date demandée 30 juin 2017
+    date_text = "30JUN2017"
+    date = datetime.datetime.strptime(date_text, "%d%b%Y")
+    print("Date : ",date)
+    timesec = calendar.timegm(date.utctimetuple())
+    print("Timestamp équivalent :", timesec)
 
     # URL de requête
-
+    url = base_url + key + latitude + longitude + str(timesec)
     print(url)
+
     # Get data from API Method
-    #data = requests.get(url).text
-    #data = json.loads(data)
+    data = requests.get(url).text
+    data = json.loads(data)
 
     # Used to print JSON format data
-    #pp = pprint.PrettyPrinter()
-    #pp.pprint(type(data))
-    #pp.pprint(data)
+    pp = pprint.PrettyPrinter()
+    pp.pprint(type(data))
+    pp.pprint(data)
 
-    # Query for Top Artist in the list [the first one]
-
-
-    pp.pprint(top_artist)
-
-    return url  # return the top artist in Spain
+    return url
 
 
 
 def main():
-    api_get_request(url)
+    api_get_request()
+
+# Exécution principale
+if __name__ == '__main__':
+    main()
