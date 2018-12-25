@@ -158,7 +158,7 @@ def main():
     print(df)
     date_name = str(datetime.datetime.utcfromtimestamp(date_init).strftime('%d-%m-%Y'))
     file_name = 'darksky_data_' + latitude[:4] + '_' + longitude[:4] + '_' + date_name + '_' + str(duree) + '.csv'
-    df.to_csv(file_name, "w")
+    df.to_csv(file_name)
 
 # Exécution principale
 if __name__ == '__main__':
