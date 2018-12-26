@@ -1,0 +1,7 @@
+{
+  "DEFAULT": {
+    "API_SECRET_KEY": "your_api_key",
+    "LATITUDE": "43.50885",
+    "LONGITUDE": "3.79118"
+  }
+}

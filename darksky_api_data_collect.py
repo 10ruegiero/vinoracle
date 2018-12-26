@@ -1,14 +1,14 @@
 #!/usr/bin/python
 
+# Import librairies
 import datetime
 import calendar
 import requests
 import json
 import pprint
 import pandas
-import configparser
 
-
+# Définition des principales fonctions
 def time_stamp(year,month,day):
     date = datetime.datetime(year,month,day)
     # print("Date : ", date)
@@ -134,25 +134,27 @@ def add_data(request,data_dict):
     return data_dict
 
 def main():
-    # Using config.ini
-    # Please use your own API key and modify config.ini.template to a valide config.ini file
-    config = configparser.ConfigParser()
-    config.read('config.ini')
-    api_key = config['DEFAULT']['API_SECRET_KEY']  # Getting API Secret key from config.ini
+    # Using config.json
+    # Please use your own API key and modify config.json.template to a valide config.json file
+    with open('config.json', 'r') as config_file:
+        config = json.load(config_file)
 
-    # Initialisation du dictionnaire
-    data_dict = init_dict()
+    # Getting API Secret key from config.json
+    api_key = config['DEFAULT']['API_SECRET_KEY']
 
     # Coordonnées géographiques
     # Coordonnées de la vigne à Mireval 43.50885, 3.79118
-    latitude = '43.50885'
-    longitude = '3.79118'
+    latitude = config['DEFAULT']['LATITUDE']
+    longitude = config['DEFAULT']['LONGITUDE']
 
     # Période temporelle
     # Date de début de la période et durée de la période
     date_init = time_stamp(2017, 1, 1)
     duree = 5
     periode = time_table(date_init, duree)
+
+    # Initialisation du dictionnaire
+    data_dict = init_dict()
 
     # Requêtes successives
     for date_time_stamp in periode:
