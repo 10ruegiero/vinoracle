@@ -134,7 +134,8 @@ def add_data(request,data_dict):
     return data_dict
 
 def main():
-    # Import de la configuration
+    # Using config.ini
+    # Please use your own API key and modify config.ini.template to a valide config.ini file
     config = configparser.ConfigParser()
     config.read('config.ini')
     api_key = config['DEFAULT']['API_SECRET_KEY']  # Getting API Secret key from config.ini
