@@ -1,9 +1,12 @@
+#!/usr/bin/python
+
 import datetime
 import calendar
 import requests
 import json
 import pprint
 import pandas
+import configparser
 
 
 def time_stamp(year,month,day):
@@ -18,7 +21,7 @@ def time_table(init_stamp,duree_periode):
     time_table = range(init_stamp, init_stamp + duree_periode*daysec, daysec)
     return time_table
 
-def api_get_request(latitude, longitude, timesec):
+def api_get_request(api_key, latitude, longitude, timesec):
     # API Manual for Time Machine Request
     # url : https: // api.darksky.net / forecast / [key] / [latitude], [longitude], [time]
     # A Time Machine Request returns the observed (in the past) or forecasted (in the future) hour - by - hour weather and daily weather conditions
@@ -36,7 +39,7 @@ def api_get_request(latitude, longitude, timesec):
     base_url = 'https://api.darksky.net/forecast/'
 
     # Secret API Key
-    key = '82ed529296a9e4d16d85f95242f3f3b2/'
+    key = api_key
 
     # Coordonnées géographiques
     print("Location : ", latitude, longitude)
@@ -131,6 +134,11 @@ def add_data(request,data_dict):
     return data_dict
 
 def main():
+    # Import de la configuration
+    config = configparser.ConfigParser()
+    config.read('config.ini')
+    api_key = config['TEST']['API_SECRET_KEY']  # Getting API Secret key from config.ini
+
     # Initialisation du dictionnaire
     data_dict = init_dict()
 
@@ -142,12 +150,12 @@ def main():
     # Période temporelle
     # Date de début de la période et durée de la période
     date_init = time_stamp(2017, 1, 1)
-    duree = 365
+    duree = 5
     periode = time_table(date_init, duree)
 
     # Requêtes successives
     for date_time_stamp in periode:
-        request = api_get_request(latitude, longitude, date_time_stamp)
+        request = api_get_request(api_key, latitude, longitude, date_time_stamp)
         # print_json(request)
         add_data(request, data_dict)
 
