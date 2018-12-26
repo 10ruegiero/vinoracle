@@ -1,0 +1,9 @@
+; config.ini
+[DEFAULT]
+API_SECRET_KEY = your_api_key
+
+[TEST]
+API_SECRET_KEY = your_api_key
+
+[CI]
+API_SECRET_KEY = your_api_key

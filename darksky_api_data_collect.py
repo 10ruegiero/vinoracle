@@ -137,7 +137,7 @@ def main():
     # Import de la configuration
     config = configparser.ConfigParser()
     config.read('config.ini')
-    api_key = config['TEST']['API_SECRET_KEY']  # Getting API Secret key from config.ini
+    api_key = config['DEFAULT']['API_SECRET_KEY']  # Getting API Secret key from config.ini
 
     # Initialisation du dictionnaire
     data_dict = init_dict()
