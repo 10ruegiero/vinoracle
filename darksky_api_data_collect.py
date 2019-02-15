@@ -149,7 +149,7 @@ def main():
 
     # Période temporelle
     # Date de début de la période et durée de la période
-    date_init = time_stamp(2017, 1, 1)
+    date_init = time_stamp(2019, 1, 1)
     duree = 5
     periode = time_table(date_init, duree)
 
@@ -169,7 +169,7 @@ def main():
     print(df)
     date_name = str(datetime.datetime.utcfromtimestamp(date_init).strftime('%d-%m-%Y'))
     file_name = 'darksky_data_' + latitude[:4] + '_' + longitude[:4] + '_' + date_name + '_' + str(duree) + '.csv'
-    df.to_csv(file_name)
+    df.to_csv(file_name, index_label="index")
 
 # Exécution principale
 if __name__ == '__main__':
