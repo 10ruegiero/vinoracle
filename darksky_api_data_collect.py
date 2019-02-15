@@ -50,8 +50,11 @@ def api_get_request(api_key, latitude, longitude, timesec):
     # Excluding datas
     exclusion = '?exclude=currently,hourly,flags'
 
+    # Optionnal parameters
+    opt_param = '&lang=fr&units=si'
+
     # URL de requête
-    url = base_url + key + "/" + latitude + "," + longitude + "," + str(timesec) + exclusion
+    url = base_url + key + "/" + latitude + "," + longitude + "," + str(timesec) + exclusion + opt_param
     print(url)
 
     # Get data from API Method
